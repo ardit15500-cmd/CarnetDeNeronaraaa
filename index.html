@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carnet de Nero Nara</title>
+<style>
+:root{--wood:#211912;--wood2:#39291d;--paper:#f1dfb9;--paper2:#e7d0a5;--ink:#30251d;--line:#cbb68f;--red:#9b4d35}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(ellipse at center,#4b3828 0,#211912 70%);color:var(--ink);font-family:Georgia,'Times New Roman',serif;display:flex;align-items:center;justify-content:center;padding:22px}
+.app{width:min(1200px,100%)}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;color:#e9d5ae;margin:0 0 16px}
+.brand{font-size:clamp(21px,3vw,30px);letter-spacing:1px}
+.brand span{color:#d78a43}
+.status{font:12px Arial,sans-serif;color:#c8b18b}
+.book-wrap{perspective:1800px;position:relative}
+.cover{min-height:min(690px,78vh);background:linear-gradient(135deg,#523a26,#2b1d14 55%,#46301e);border:9px solid #120d09;border-radius:9px 17px 17px 9px;box-shadow:0 25px 70px #0008,inset 0 0 0 2px #a17b4d,inset 0 0 0 7px #382719;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;cursor:pointer;color:#e7c78c;text-align:center}
+.cover:before{content:"";position:absolute;inset:22px;border:1px solid #b38b52;border-radius:3px}
+.cover:after{content:"";position:absolute;inset:34px;border:1px solid #8d673c;opacity:.7}
+.cover-content{z-index:1;padding:35px}
+.leaf{font-size:48px;color:#bd8e4b;display:block;margin-bottom:24px}
+.cover h1{font-size:clamp(36px,7vw,76px);font-weight:normal;line-height:1.12;margin:0;letter-spacing:1px;text-shadow:0 3px 5px #0007}
+.cover .sub{font-size:14px;letter-spacing:4px;text-transform:uppercase;margin-top:25px;color:#c5a575}
+.open-hint{font:12px Arial,sans-serif;letter-spacing:1px;color:#bba078;margin-top:55px}
+.spread{display:none !important;grid-template-columns:1fr 1fr;min-height:min(690px,78vh);filter:drop-shadow(0 20px 25px #0006);position:relative}
+.spread.open{display:grid !important;animation:openbook .5s ease}
+@keyframes openbook{from{transform:rotateY(-8deg) scale(.98);opacity:.5}to{transform:rotateY(0) scale(1);opacity:1}}
+.page{position:relative;background:repeating-linear-gradient(to bottom,var(--paper) 0,var(--paper) 31px,var(--line) 32px,var(--paper) 33px);padding:clamp(22px,4vw,46px);min-width:0;box-shadow:inset 0 0 35px #97774b24;overflow:hidden}
+.page:first-child{border-radius:8px 0 0 8px;border-right:1px solid #bca27a}
+.page:last-child{border-radius:0 8px 8px 0;border-left:1px solid #c5ad83}
+.page:before{content:"";position:absolute;top:0;bottom:0;left:19px;width:1px;background:#b86e5a70}
+.page h2{font-weight:normal;font-size:clamp(21px,3vw,30px);margin:0 0 18px;padding-bottom:10px;border-bottom:2px solid #a45b3d;position:relative;z-index:1}
+.page-number{position:absolute;bottom:16px;right:25px;color:#8d7759;font-size:12px}
+.writing{width:100%;height:calc(100% - 52px);min-height:400px;background:transparent;border:0;resize:none;color:#382b20;font:17px/32px Georgia,serif;outline:none;position:relative;z-index:1;padding:0 4px}
+.writing::placeholder{color:#9b8767;font-style:italic}
+.spine{position:absolute;left:50%;top:0;bottom:0;width:16px;transform:translateX(-50%);background:linear-gradient(90deg,#5b3b22,#24180f 45%,#68472b);z-index:2;box-shadow:0 0 8px #38210f55}
+.controls{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:18px}
+button{border:1px solid #a17a48;background:#302116;color:#ead3a8;padding:11px 18px;border-radius:5px;font:14px Arial,sans-serif;cursor:pointer}
+button:hover{background:#4a3220}
+#saveBtn{font-weight:bold;padding:11px 22px}
+button:disabled{opacity:.35;cursor:not-allowed}
+.page-indicator{color:#d7c19c;font:12px Arial,sans-serif;min-width:95px;text-align:center}
+.hint{color:#bda984;text-align:center;font:12px Arial,sans-serif;line-height:1.6;margin-top:14px}
+@media(max-width:680px){body{padding:12px}.spread{min-height:70vh}.page{padding:24px 15px 32px}.page:before{left:10px}.writing{font-size:15px;line-height:28px;min-height:350px}.page h2{font-size:19px}.spine{width:8px}.cover{min-height:70vh}.page-number{right:12px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top"><div class="brand"><span>◉</span> Carnet de Nero Nara</div><div class="status" id="saveStatus">Carnet personnel</div></header>
+  <div class="book-wrap">
+    <section class="cover" id="cover" role="button" tabindex="0" aria-label="Ouvrir le carnet">
+      <div class="cover-content">
+        <span class="leaf">◉</span>
+        <h1>Carnet de<br>Nero Nara</h1>
+        <div class="sub">Archives personnelles</div>
+        <div class="open-hint">CLIQUER POUR OUVRIR LE CARNET</div>
+      </div>
+    </section>
+    <section class="spread" id="spread" aria-label="Pages du carnet">
+      <div class="page">
+        <h2 id="leftHeading">Page 1</h2>
+        <textarea class="writing" id="leftText" aria-label="Texte de la page de gauche" placeholder="Écris ici tout ce que tu veux garder…"></textarea>
+        <span class="page-number" id="leftNum">01</span>
+      </div>
+      <div class="spine"></div>
+      <div class="page">
+        <h2 id="rightHeading">Page 2</h2>
+        <textarea class="writing" id="rightText" aria-label="Texte de la page de droite" placeholder="Continue ton histoire ici…"></textarea>
+        <span class="page-number" id="rightNum">02</span>
+      </div>
+    </section>
+  </div>
+  <div class="controls" id="controls" style="display:none">
+    <button id="coverBtn">↶ Couverture</button>
+    <button id="prevBtn">← Pages précédentes</button>
+    <span class="page-indicator" id="indicator">Pages 1–2</span>
+    <button id="nextBtn">Pages suivantes →</button>
+    <button id="saveBtn">💾 Sauvegarder</button>
+  </div>
+  <p class="hint" id="hint">Un carnet inspiré de l’univers ninja. Clique sur la couverture pour l’ouvrir.</p>
+</div>
+<script>
+const KEY='nero-nara-carnet-pages-v1';
+let pages={};
+try{pages=JSON.parse(localStorage.getItem(KEY)||'{}')}catch{pages={}}
+let leftIndex=0;
+const cover=document.getElementById('cover'), spread=document.getElementById('spread'), controls=document.getElementById('controls');
+const leftText=document.getElementById('leftText'),rightText=document.getElementById('rightText');
+function pageTitle(i){return 'Page '+(i+1)}
+function loadPage(i,el){el.value=pages[i]||''}
+function saveCurrent(){
+  pages[leftIndex]=leftText.value;
+  pages[leftIndex+1]=rightText.value;
+  try{
+    localStorage.setItem(KEY,JSON.stringify(pages));
+    document.getElementById('saveStatus').textContent='Modifications enregistrées ici';
+  }catch{
+    document.getElementById('saveStatus').textContent='Enregistrement indisponible';
+  }
+  /* GitHub Pages est statique : localStorage reste propre à ce navigateur.
+     Pour que TOUS les visiteurs voient les sauvegardes, il faut une base distante. */
+}
+function showSpread(){
+ cover.style.display='none';spread.classList.add('open');controls.style.display='flex';document.getElementById('hint').textContent='Écris directement sur les pages. Clique sur 💾 Sauvegarder pour enregistrer.';
+ document.getElementById('leftHeading').textContent=pageTitle(leftIndex);document.getElementById('rightHeading').textContent=pageTitle(leftIndex+1);
+ document.getElementById('leftNum').textContent=String(leftIndex+1).padStart(2,'0');document.getElementById('rightNum').textContent=String(leftIndex+2).padStart(2,'0');
+ loadPage(leftIndex,leftText);loadPage(leftIndex+1,rightText);
+ document.getElementById('indicator').textContent=`Pages ${leftIndex+1}–${leftIndex+2}`;
+ document.getElementById('prevBtn').disabled=leftIndex===0;
+}
+function turn(delta){saveCurrent();leftIndex=Math.max(0,leftIndex+delta*2);spread.classList.remove('open');void spread.offsetWidth;showSpread();}
+function backToCover(){saveCurrent();spread.classList.remove('open');spread.style.display='none';cover.style.display='flex';controls.style.display='none';document.getElementById('hint').textContent='Un carnet inspiré de l’univers ninja. Clique sur la couverture pour l’ouvrir.';setTimeout(()=>spread.style.display='grid',0);}
+cover.addEventListener('click',showSpread);cover.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();showSpread()}});
+document.getElementById('prevBtn').addEventListener('click',()=>turn(-1));
+document.getElementById('nextBtn').addEventListener('click',()=>turn(1));
+document.getElementById('coverBtn').addEventListener('click',backToCover);
+document.getElementById('saveBtn').addEventListener('click',saveCurrent);
+leftText.addEventListener('input',saveCurrent);rightText.addEventListener('input',saveCurrent);
+</script>
+</body>
+</html>
